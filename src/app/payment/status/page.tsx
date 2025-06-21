@@ -38,7 +38,10 @@ function PaymentCheck() {
   const [paymentData, setPaymentData] = useState<PaymentData>();
   const [loading, setLoading] = useState(true);
 
-  console.log("Search Params:", searchParams.toString());
+  const params = Object.fromEntries(searchParams.entries());
+  Object.keys(params).forEach((key, value) => {
+    console.log(`Key: ${key}, Value: ${value}`);
+  });
 
   // useEffect(() => {
   //   const processPaymentResponse = async () => {
@@ -74,7 +77,7 @@ function PaymentCheck() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6">
-        {paymentData?.success ? (
+        {/* {paymentData?.success ? (
           <div className="text-center">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg
@@ -159,7 +162,7 @@ function PaymentCheck() {
               Try Again
             </button>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

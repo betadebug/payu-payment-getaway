@@ -3,8 +3,8 @@ export const PAYU_CONFIG = {
   merchantKey: process.env.PAYU_MERCHANT_KEY!,
   merchantSalt: process.env.PAYU_MERCHANT_SALT!,
   baseUrl: process.env.PAYU_BASE_URL!,
-  successUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/api/payment/success`,
-  failureUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/payment/failure`,
+  successUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/api/payment/response`,
+  failureUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/api/payment/response`,
 };
 
 export interface PayUFormData {

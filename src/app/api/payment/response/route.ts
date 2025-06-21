@@ -54,32 +54,44 @@ export async function POST(request: NextRequest) {
     }
 
     // Process payment based on status
+    // if (responseData.status === "success") {
+    //   // Handle successful payment
+    //   console.log("Payment successful:", responseData);
+
+    //   // Here you would typically:
+    //   // 1. Update your database
+    //   // 2. Send confirmation emails
+    //   // 3. Update order status
+
+    //   return NextResponse.json({
+    //     success: true,
+    //     message: "Payment successful",
+    //     txnId: responseData.txnid,
+    //     payuMoneyId: responseData.payuMoneyId,
+    //     amount: responseData.amount,
+    //   });
+    // } else {
+    //   // Handle failed payment
+    //   console.error("Payment failed:", responseData);
+
+    //   return NextResponse.json({
+    //     success: false,
+    //     message: responseData.error_Message || "Payment failed",
+    //     txnId: responseData.txnid,
+    //     error: responseData.error,
+    //   });
+    // }
+
     if (responseData.status === "success") {
-      // Handle successful payment
-      console.log("Payment successful:", responseData);
-
-      // Here you would typically:
-      // 1. Update your database
-      // 2. Send confirmation emails
-      // 3. Update order status
-
-      return NextResponse.json({
-        success: true,
-        message: "Payment successful",
-        txnId: responseData.txnid,
-        payuMoneyId: responseData.payuMoneyId,
-        amount: responseData.amount,
-      });
+      // Redirect to frontend page with query params
+      return NextResponse.redirect(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/payment/status?txnid=${responseData.txnid}&status=success`
+      );
     } else {
-      // Handle failed payment
-      console.error("Payment failed:", responseData);
-
-      return NextResponse.json({
-        success: false,
-        message: responseData.error_Message || "Payment failed",
-        txnId: responseData.txnid,
-        error: responseData.error,
-      });
+      // Redirect to frontend page with query params
+      return NextResponse.redirect(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/payment/status?txnid=${responseData.txnid}&status=failure&error=${responseData.error}`
+      );
     }
   } catch (error) {
     console.error("Payment response processing error:", error);
