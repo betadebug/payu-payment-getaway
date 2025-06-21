@@ -48,6 +48,6 @@ export async function POST(request: Request) {
 
   // Redirect to frontend page with query params
   return NextResponse.redirect(
-    `https://your-ngrok-url.ngrok.io/payment/success?txnid=${responseData.txnid}&status=success`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/payment/success?txnid=${responseData.txnid}&status=success`
   );
 }
