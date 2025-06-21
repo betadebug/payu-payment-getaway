@@ -1,3 +1,5 @@
+"use client";
+
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -18,6 +20,8 @@ export default function PaymentCheck() {
   useEffect(() => {
     const processPaymentResponse = async () => {
       try {
+        console.log(searchParams.toString());
+
         // Create URLSearchParams from the searchParams object
         const params = new URLSearchParams(searchParams.toString());
         const formData = new FormData();
