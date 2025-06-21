@@ -41,25 +41,6 @@ export async function POST(request: NextRequest) {
     // Prepare PayU form data
     const payuFormData = preparePayUFormData(body);
 
-    // Debug hash calculation in development
-    if (process.env.NODE_ENV === "development") {
-      const { debugHashCalculation } = await import("@/lib/payu-utils");
-      debugHashCalculation(
-        payuFormData.key,
-        payuFormData.txnid,
-        payuFormData.amount,
-        payuFormData.productinfo,
-        payuFormData.firstname,
-        payuFormData.email,
-        payuFormData.udf1 || "",
-        payuFormData.udf2 || "",
-        payuFormData.udf3 || "",
-        payuFormData.udf4 || "",
-        payuFormData.udf5 || "",
-        process.env.PAYU_MERCHANT_SALT!
-      );
-    }
-
     return NextResponse.json({
       success: true,
       data: payuFormData,

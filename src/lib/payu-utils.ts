@@ -76,38 +76,6 @@ export function verifyPayUResponse(
   return calculatedHash === hashToCompare;
 }
 
-export function debugHashCalculation(
-  key: string,
-  txnid: string,
-  amount: string,
-  productinfo: string,
-  firstname: string,
-  email: string,
-  udf1: string = "",
-  udf2: string = "",
-  udf3: string = "",
-  udf4: string = "",
-  udf5: string = "",
-  salt: string
-): void {
-  const hashString = `${key}|${txnid}|${amount}|${productinfo}|${firstname}|${email}|${udf1}|${udf2}|${udf3}|${udf4}|${udf5}||||||${salt}`;
-  const hash = crypto.createHash("sha512").update(hashString).digest("hex");
-
-  console.log("=== PayU Hash Debug ===");
-  console.log("Hash String:", hashString);
-  console.log("Generated Hash:", hash);
-  console.log(
-    "Expected v1 Hash:",
-    "0272afe1494e7705e4c1dc9b04a66c19529669d6871679c63c59203e3afe265fb9beaea8fd8de9c443d0f2ae57ffd1add5cf27b197b8819fdf88e15c004950ed"
-  );
-  console.log(
-    "Hash Match:",
-    hash ===
-      "0272afe1494e7705e4c1dc9b04a66c19529669d6871679c63c59203e3afe265fb9beaea8fd8de9c443d0f2ae57ffd1add5cf27b197b8819fdf88e15c004950ed"
-  );
-  console.log("======================");
-}
-
 export function preparePayUFormData(
   paymentRequest: PaymentRequest
 ): PayUFormData {

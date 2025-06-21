@@ -43,20 +43,18 @@ function PaymentCheck() {
       try {
         // Create URLSearchParams from the searchParams object
         const params = new URLSearchParams(searchParams.toString());
+        const formData = new FormData();
 
         // Add all parameters to FormData
         params.forEach((value, key) => {
-          console.log(`Adding param: ${key} = ${value}`);
+          formData.append(key, value);
         });
 
-        // // Send to backend for verification
-        // const response = await axios.post(
-        //   "http://localhost:3000/api/payment/response",
-        //   data
-        // );
+        // Send to backend for verification
+        const response = await axios.post("/api/payment/response", formData);
 
-        // const result = await response.json();
-        // setPaymentData(result);
+        const result = await response.data;
+        setPaymentData(result);
       } catch (error) {
         console.error("Error processing payment response:", error);
       } finally {
