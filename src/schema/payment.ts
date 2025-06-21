@@ -1,0 +1,41 @@
+import { string, object, number, optional } from "zod";
+
+export const paymentRequestSchema = object({
+  amount: number().min(1, "Amount must be greater than 0"),
+  productInfo: string().min(1, "Product info is required"),
+  firstName: string().min(1, "First name is required"),
+  email: string().email("Invalid email format"),
+  phone: string().min(10, "Phone number must be at least 10 digits"),
+  udf1: optional(string()),
+  udf2: optional(string()),
+  udf3: optional(string()),
+  udf4: optional(string()),
+  udf5: optional(string()),
+  key: string().optional(),
+  txnid: string().optional(),
+  hash: string().optional(),
+  successUrl: string().optional(),
+  failureUrl: string().optional(),
+  environment: string().optional(),
+  merchantSalt: string().optional(),
+});
+
+export const paymentResponseSchema = object({
+  key: string(),
+  txnid: string(),
+  amount: number(),
+  productinfo: string(),
+  firstname: string(),
+  email: string(),
+  phone: optional(string()),
+  status: string(),
+  hash: string(),
+  udf1: optional(string()),
+  udf2: optional(string()),
+  udf3: optional(string()),
+  udf4: optional(string()),
+  udf5: optional(string()),
+  payuMoneyId: optional(string()),
+  error: optional(string()),
+  error_Message: optional(string()),
+});
