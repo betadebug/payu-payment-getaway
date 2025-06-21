@@ -51,9 +51,13 @@ function PaymentCheck() {
         });
 
         // Send to backend for verification
-        const response = await axios.post("/api/payment/response", formData);
+        // Send to backend for verification
+        const response = await fetch("/api/payment/response", {
+          method: "POST",
+          body: formData,
+        });
 
-        const result = await response.data;
+        const result = await response.json();
         setPaymentData(result);
       } catch (error) {
         console.error("Error processing payment response:", error);
