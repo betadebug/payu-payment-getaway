@@ -17,43 +17,45 @@ export default function PaymentCheck() {
   const [paymentData, setPaymentData] = useState<PaymentData>();
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const processPaymentResponse = async () => {
-      try {
-        console.log(searchParams.toString());
+  console.log("Search Params:", searchParams.toString());
 
-        // Create URLSearchParams from the searchParams object
-        const params = new URLSearchParams(searchParams.toString());
-        const formData = new FormData();
+  //   useEffect(() => {
+  //     const processPaymentResponse = async () => {
+  //       try {
+  //         console.log(searchParams.toString());
 
-        // Add all parameters to FormData
-        params.forEach((value, key) => {
-          formData.append(key, value);
-        });
+  //         // Create URLSearchParams from the searchParams object
+  //         const params = new URLSearchParams(searchParams.toString());
+  //         const formData = new FormData();
 
-        // Send to backend for verification
-        // Send to backend for verification
-        const response = await fetch("/api/payment/response", {
-          method: "POST",
-          body: formData,
-        });
+  //         // Add all parameters to FormData
+  //         params.forEach((value, key) => {
+  //           formData.append(key, value);
+  //         });
 
-        const result = await response.json();
-        setPaymentData(result);
-      } catch (error) {
-        console.error("Error processing payment response:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //         // Send to backend for verification
+  //         // Send to backend for verification
+  //         const response = await fetch("/api/payment/response", {
+  //           method: "POST",
+  //           body: formData,
+  //         });
 
-    processPaymentResponse();
-  }, [searchParams]); // Add searchParams as a dependency
+  //         const result = await response.json();
+  //         setPaymentData(result);
+  //       } catch (error) {
+  //         console.error("Error processing payment response:", error);
+  //       } finally {
+  //         setLoading(false);
+  //       }
+  //     };
+
+  //     processPaymentResponse();
+  //   }, [searchParams]); // Add searchParams as a dependency
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6">
-        {paymentData?.success ? (
+        {/* {paymentData?.success ? (
           <div className="text-center">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg
@@ -138,7 +140,7 @@ export default function PaymentCheck() {
               Try Again
             </button>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
