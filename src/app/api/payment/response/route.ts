@@ -3,7 +3,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyPayUResponse } from "@/lib/payu-utils";
 import { PAYU_CONFIG } from "@/lib/payu-config";
 
+export async function GET(request: NextRequest) {
+  return NextResponse.json({ message: "Hello, world!" });
+}
+
 export async function POST(request: NextRequest) {
+  const formData = await request.formData();
+  console.log("Received form data:", Object.fromEntries(formData.entries()));
+  return NextResponse.json(formData);
+}
+
+export async function PUT(request: NextRequest) {
   try {
     const formData = await request.formData();
 
