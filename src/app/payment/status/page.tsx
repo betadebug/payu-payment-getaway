@@ -2,8 +2,6 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import axios from "axios";
-import { date } from "zod/v4-mini";
 
 interface PaymentData {
   success: boolean;
@@ -35,13 +33,9 @@ export default function PaymentSuccess() {
 
 function PaymentCheck() {
   const searchParams = useSearchParams();
-  const [paymentData, setPaymentData] = useState<PaymentData>();
-  const [loading, setLoading] = useState(true);
-
-  const params = Object.fromEntries(searchParams.entries());
-  Object.keys(params).forEach((key, value) => {
-    console.log(`Key: ${key}, Value: ${value}`);
-  });
+  const txnId = searchParams.get("txnid");
+  const status = searchParams.get("status");
+  const message = searchParams.get("msg");
 
   // useEffect(() => {
   //   const processPaymentResponse = async () => {
@@ -77,7 +71,7 @@ function PaymentCheck() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6">
-        {/* {paymentData?.success ? (
+        {status === "success" ? (
           <div className="text-center">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg
@@ -102,14 +96,9 @@ function PaymentCheck() {
             <div className="bg-gray-50 rounded-lg p-4 mb-4">
               <div className="text-sm text-gray-600">
                 <p>
-                  <strong>Transaction ID:</strong> {paymentData.txnId}
+                  <strong>Transaction ID:</strong> {txnId}
                 </p>
-                <p>
-                  <strong>PayU Money ID:</strong> {paymentData.payuMoneyId}
-                </p>
-                <p>
-                  <strong>Amount:</strong> ₹{paymentData.amount}
-                </p>
+                <p>{message}</p>
               </div>
             </div>
 
@@ -141,15 +130,14 @@ function PaymentCheck() {
               Payment Failed
             </h1>
             <p className="text-gray-600 mb-4">
-              {paymentData?.message ||
-                "Something went wrong with your payment."}
+              {message || "There was an issue with your payment."}
             </p>
 
-            {paymentData?.txnId && (
+            {txnId && (
               <div className="bg-gray-50 rounded-lg p-4 mb-4">
                 <div className="text-sm text-gray-600">
                   <p>
-                    <strong>Transaction ID:</strong> {paymentData.txnId}
+                    <strong>Transaction ID:</strong> {txnId}
                   </p>
                 </div>
               </div>
@@ -162,7 +150,7 @@ function PaymentCheck() {
               Try Again
             </button>
           </div>
-        )} */}
+        )}
       </div>
     </div>
   );

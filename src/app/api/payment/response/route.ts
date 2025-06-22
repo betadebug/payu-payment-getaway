@@ -8,51 +8,67 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const form = await request.formData();
-  const formData = Object.fromEntries(form.entries());
+  try {
+    const form = await request.formData();
+    const formData = Object.fromEntries(form.entries());
+    const responseMessage = formData["field9"] as string;
 
-  const responseData = {
-    key: formData["key"] as string,
-    txnid: formData["txnid"] as string,
-    amount: formData["amount"] as string,
-    productinfo: formData["productinfo"] as string,
-    firstname: formData["firstname"] as string,
-    email: formData["email"] as string,
-    phone: formData["phone"] as string,
-    status: formData["status"] as string,
-    hash: formData["hash"] as string,
-    udf1: (formData["udf1"] as string) || "",
-    udf2: (formData["udf2"] as string) || "",
-    udf3: (formData["udf3"] as string) || "",
-    udf4: (formData["udf4"] as string) || "",
-    udf5: (formData["udf5"] as string) || "",
-    payuMoneyId: formData["payuMoneyId"] as string,
-    error: formData["error"] as string,
-    error_Message: formData["error_Message"] as string,
-  };
+    const responseData = {
+      key: formData["key"] as string,
+      txnid: formData["txnid"] as string,
+      amount: formData["amount"] as string,
+      productinfo: formData["productinfo"] as string,
+      firstname: formData["firstname"] as string,
+      email: formData["email"] as string,
+      phone: formData["phone"] as string,
+      status: formData["status"] as string,
+      hash: formData["hash"] as string,
+      udf1: (formData["udf1"] as string) || "",
+      udf2: (formData["udf2"] as string) || "",
+      udf3: (formData["udf3"] as string) || "",
+      udf4: (formData["udf4"] as string) || "",
+      udf5: (formData["udf5"] as string) || "",
+      payuMoneyId: formData["payuMoneyId"] as string,
+      error: formData["error"] as string,
+      error_Message: formData["error_Message"] as string,
+    };
 
-  const isValidHash = verifyPayUResponse(
-    responseData.key,
-    responseData.txnid,
-    responseData.amount,
-    responseData.productinfo,
-    responseData.firstname,
-    responseData.email,
-    responseData.status,
-    responseData.udf1,
-    responseData.udf2,
-    responseData.udf3,
-    responseData.udf4,
-    responseData.udf5,
-    PAYU_CONFIG.merchantSalt,
-    responseData.hash
-  );
+    const isValidHash = verifyPayUResponse(
+      responseData.key,
+      responseData.txnid,
+      responseData.amount,
+      responseData.productinfo,
+      responseData.firstname,
+      responseData.email,
+      responseData.status,
+      responseData.udf1,
+      responseData.udf2,
+      responseData.udf3,
+      responseData.udf4,
+      responseData.udf5,
+      PAYU_CONFIG.merchantSalt,
+      responseData.hash
+    );
 
-  console.log("Received form data: ", responseData);
-  return NextResponse.json(
-    { data: responseData, isValidHash: isValidHash },
-    { status: 200 }
-  );
+    const successUrl = `${
+      process.env.NEXT_PUBLIC_BASE_URL
+    }/payment/status?txnid=${
+      responseData.txnid
+    }&status=success&msg=${encodeURIComponent(responseMessage)}`;
+    const failureUrl = `${
+      process.env.NEXT_PUBLIC_BASE_URL
+    }/payment/status?txnid=${
+      responseData.txnid
+    }&status=failure&msg=${encodeURIComponent(responseMessage)}`;
+    const redirectURL =
+      responseData.status === "success" ? successUrl : failureUrl;
+
+    if (isValidHash) {
+      return NextResponse.redirect(redirectURL, 302);
+    } else {
+      return NextResponse.redirect(failureUrl, 302);
+    }
+  } catch (error) {}
 }
 
 /**
