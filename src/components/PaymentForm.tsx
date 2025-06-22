@@ -37,7 +37,7 @@ export default function PaymentForm({ onPaymentInitiated }: PaymentFormProps) {
   const form = useForm<z.infer<typeof paymentRequestSchema>>({
     resolver: zodResolver(paymentRequestSchema),
     defaultValues: {
-      amount: 10,
+      amount: 5,
       productInfo: "Sample Product",
       firstName: "Raju",
       email: "raju@betadebug.com",
@@ -113,10 +113,10 @@ export default function PaymentForm({ onPaymentInitiated }: PaymentFormProps) {
                 <FormControl>
                   <Input
                     placeholder="Enter amount"
-                    step={0.01}
                     type="number"
-                    inputMode="numeric"
-                    {...field}
+                    inputMode="decimal"
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    value={field.value || 0.0}
                   />
                 </FormControl>
                 <FormMessage />
